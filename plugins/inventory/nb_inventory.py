@@ -1348,9 +1348,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             service_id = service["id"]
 
             if service.get("device"):
-                self.device_services_lookup[service["device"]["id"]][
-                    service_id
-                ] = service
+                self.device_services_lookup[service["device"]["id"]][service_id] = (
+                    service
+                )
 
             if service.get("virtual_machine"):
                 self.vm_services_lookup[service["virtual_machine"]["id"]][
@@ -1486,14 +1486,14 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
 
                 if ipaddress["assigned_object_type"] == "virtualization.vminterface":
                     self.vm_ipaddresses_lookup[ip_id] = ipaddress_copy
-                    self.vm_ipaddresses_intf_lookup[interface_id][
-                        ip_id
-                    ] = ipaddress_copy
+                    self.vm_ipaddresses_intf_lookup[interface_id][ip_id] = (
+                        ipaddress_copy
+                    )
                 else:
                     self.device_ipaddresses_lookup[ip_id] = ipaddress_copy
-                    self.device_ipaddresses_intf_lookup[interface_id][
-                        ip_id
-                    ] = ipaddress_copy  # Remove "assigned_object_X" attributes, as that's redundant when ipaddress is added to an interface
+                    self.device_ipaddresses_intf_lookup[interface_id][ip_id] = (
+                        ipaddress_copy  # Remove "assigned_object_X" attributes, as that's redundant when ipaddress is added to an interface
+                    )
 
                 del ipaddress_copy["assigned_object_id"]
                 del ipaddress_copy["assigned_object_type"]
@@ -1607,7 +1607,7 @@ class InventoryModule(BaseInventoryPlugin, Constructable, Cacheable):
             cached_api_version = None
             cache = None
 
-        status = self._fetch_information(self.api_endpoint + "/api/status")
+        status = self._fetch_information(self.api_endpoint + "/api/status/")
         netbox_api_version = ".".join(status["netbox-version"].split(".")[:2])
 
         if version.parse(netbox_api_version) >= version.parse("3.5.0"):
